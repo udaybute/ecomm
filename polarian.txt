@@ -1,307 +1,121 @@
-please varify and modify this code to add attachment to polarian workitem. 
-
-public List<Attachment> addWorkItemAttachements(Core_DataEntitiy data, List<File> attachments) {
-		// TODO Auto-generated method stub
-		Map<String, String> details = data.getValues();
-		List<Attachment> attachements = new ArrayList<>();
-		try {
-		String Inputjson="{\r\n"
-        		+ "  \"data\": [\r\n";
-		String wi="";
-		int count = 0;
-		if(attachments != null) {
-			count = attachments.size();
-		}
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		for(File file : attachments)
-		{
-
-			count= count -1;
-
-			wi= wi+"    {\r\n"
-	        		+ "      \"type\": \"workitem_attachments\",\r\n"
-					+ "      \"attributes\": {\r\n"
-					+ "        \"fileName\": \""+file.getName()+"\",\r\n"
-					+ "        \"title\": \""+file.getName()+"\"\r\n"
-					+ "      }";
-
-	        		if(count == 0) {
-	        			wi = wi +"    }\r\n";
-	    			}
-	    			else {
-	    				wi = wi +"    },\r\n";
-	    			}
-	        		builder.addBinaryBody(file.getName(), file, ContentType.APPLICATION_OCTET_STREAM, file.getName());
-		}
-
-        Inputjson = Inputjson + wi+ "  ]\r\n"
-        		+ "}";
-
-        builder.addTextBody("data", Inputjson, ContentType.APPLICATION_JSON);
-	    HttpEntity multipart = builder.build();
-	    CloseableHttpClient client = HttpClients.createDefault();
-
-		String uri = details.get(ApplicationConstant.TARGET_URL) + RestServiceConstants.REST_URI + "/projects/"
-				+ details.get(ApplicationConstant.PROJECT_ID) + "/workitems/"
-				+ details.get(ApplicationConstant.WORKITEM_ID) + "/attachments";
-
- 
-
-		HttpPost httpPost = new HttpPost(uri);
-		httpPost.setEntity(multipart);
-		httpPost.setHeader("Content-type", "multipart/form-data");
-		httpPost.setHeader("Accept", "application/json");
-		httpPost.setHeader("Authorization",
-				RestServiceConstants.REST_AUTH_BEARER + details.get(ApplicationConstant.TOKEN));
-		CloseableHttpResponse response = client.execute(httpPost);
-
- 
-
-		if (response.getStatusLine().getStatusCode() == 201) {
-			String content = IOUtils.toString(response.getEntity().getContent());
-			JSONObject obj = new JSONObject(content);
-
- 
-
-			if (obj.length() > 1) {
-
- 
-
-				if (obj.has("data")) {
-					JSONArray jsonArray = (JSONArray) (obj.get("data"));
-
- 
-
-					for (int i = 0; i < jsonArray.length(); i++) {
-						Attachment attachment = new Attachment();
-						JSONObject explrObject = (JSONObject) jsonArray.get(i);
-						if(explrObject.has("id")) {
-							String id = (String) explrObject.get("id");
-							attachment.setId(id);
-							attachements.add(attachment);
-						}
-					}
-
- 
-
-				}
-			} 
-		}
-		else {
-			JSONObject obj = new JSONObject(IOUtils.toString(response.getEntity().getContent()));
-
-        	if (obj.has("errors")) {
-				JSONArray jsonArray = (JSONArray) (obj.get("errors"));
-
- 
-
-				for (int i = 0; i < jsonArray.length(); i++) {
-					JSONObject explrObject = (JSONObject) jsonArray.get(i);
-					if(explrObject.has("detail")) {
-						String error = (String) explrObject.get("detail");
-						System.out.println("Error occured while getting Work Item's attachment by ID \nStatus Code:" +
-						response.getStatusLine().getStatusCode() + "\nDetails:"+ error);
-					}
-
-				}
-        	}
-		}
-		}
-		catch(Exception ex) {
-			ex.getMessage();
-		}
-		return attachements;
-	}
-
-
-
-
-
-[5:51 PM] Garud Balaji Bhagwanrao
-
-package com.coe.core_entities.rest.models;
-
- 
-
 import java.io.File;
-
- 
-
-/**
-
-* To store attachment details
-
-* @author nilamulhas.kolhe
-
-*
-
-*/
-
-public class Attachment {
-
-	private String type;
-
-	private String id;
-
-	private String fileName;
-
-	private String updated;
-
-	private int length;
-
-	private File file;
-
- 
-
-	public Attachment () {
-
-		super();
-
-	}
-
- 
-
-	
-
-	public Attachment(String type, String id, String fileName, String updated, int length) {
-
-		super();
-
-		this.type = type;
-
-		this.id = id;
-
-		this.fileName = fileName;
-
-		this.updated = updated;
-
-		this.length = length;
-
-	}
-
- 
-
- 
-
-	public String getType() {
-
-		return type;
-
-	}
-
- 
-
- 
-
-	public void setType(String type) {
-
-		this.type = type;
-
-	}
-
- 
-
- 
-
-	public String getId() {
-
-		return id;
-
-	}
-
- 
-
- 
-
-	public void setId(String id) {
-
-		this.id = id;
-
-	}
-
- 
-
- 
-
-	public String getFileName() {
-
-		return fileName;
-
-	}
-
- 
-
- 
-
-	public void setFileName(String fileName) {
-
-		this.fileName = fileName;
-
-	}
-
- 
-
- 
-
-	public String getUpdated() {
-
-		return updated;
-
-	}
-
- 
-
- 
-
-	public void setUpdated(String updated) {
-
-		this.updated = updated;
-
-	}
-
- 
-
- 
-
-	public int getLength() {
-
-		return length;
-
-	}
-
- 
-
- 
-
-	public void setLength(int length) {
-
-		this.length = length;
-
-	}
-
- 
-
- 
-
-	public File getFile() {
-
-		return file;
-
-	}
-
- 
-
- 
-
-	public void setFile(File file) {
-
-		this.file = file;
-
-	}
-
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class AttachmentUploader {
+    
+    public List<Attachment> addWorkItemAttachments(Core_DataEntitiy data, List<File> attachments, String workItemId) {
+        List<Attachment> attachmentsList = new ArrayList<>();
+        
+        Map<String, String> details = data.getValues();
+        try {
+            String inputJson = "{\n" +
+                    "  \"data\": [\n";
+            String workItemAttachments = "";
+            int attachmentsCount = attachments.size();
+            
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            
+            for (File file : attachments) {
+                attachmentsCount--;
+                
+                workItemAttachments += "    {\n" +
+                        "      \"type\": \"workitem_attachments\",\n" +
+                        "      \"attributes\": {\n" +
+                        "        \"fileName\": \"" + file.getName() + "\",\n" +
+                        "        \"title\": \"" + file.getName() + "\"\n" +
+                        "      }\n" +
+                        "    }";
+                
+                if (attachmentsCount == 0) {
+                    workItemAttachments += "\n";
+                } else {
+                    workItemAttachments += ",\n";
+                }
+                
+                builder.addBinaryBody(file.getName(), file, ContentType.APPLICATION_OCTET_STREAM, file.getName());
+            }
+            
+            inputJson += workItemAttachments + "  ]\n" +
+                    "}";
+            
+            builder.addTextBody("data", inputJson, ContentType.APPLICATION_JSON);
+            HttpEntity multipart = builder.build();
+            CloseableHttpClient client = HttpClients.createDefault();
+            
+            String uri = details.get(ApplicationConstant.TARGET_URL) + RestServiceConstants.REST_URI + "/projects/"
+                    + details.get(ApplicationConstant.PROJECT_ID) + "/workitems/" + workItemId + "/attachments";
+            
+            HttpPost httpPost = new HttpPost(uri);
+            httpPost.setEntity(multipart);
+            httpPost.setHeader("Content-type", "multipart/form-data");
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Authorization",
+                    RestServiceConstants.REST_AUTH_BEARER + details.get(ApplicationConstant.TOKEN));
+            CloseableHttpResponse response = client.execute(httpPost);
+            
+            if (response.getStatusLine().getStatusCode() == 201) {
+                String content = IOUtils.toString(response.getEntity().getContent());
+                JSONObject obj = new JSONObject(content);
+                
+                if (obj.length() > 1) {
+                    if (obj.has("data")) {
+                        JSONArray jsonArray = obj.getJSONArray("data");
+                        
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject attachmentObject = jsonArray.getJSONObject(i);
+                            if (attachmentObject.has("id")) {
+                                String id = attachmentObject.getString("id");
+                                Attachment attachment = new Attachment();
+                                attachment.setId(id);
+                                attachmentsList.add(attachment);
+                            }
+                        }
+                    }
+                }
+            } else {
+                JSONObject obj = new JSONObject(IOUtils.toString(response.getEntity().getContent()));
+                
+                if (obj.has("errors")) {
+                    JSONArray jsonArray = obj.getJSONArray("errors");
+                    
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject errorObject = jsonArray.getJSONObject(i);
+                        if (errorObject.has("detail")) {
+                            String error = errorObject.getString("detail");
+                            System.out.println("Error occurred while adding work item's attachment by ID\nStatus Code: " +
+                                    response.getStatusLine().getStatusCode() + "\nDetails: " + error);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return attachmentsList;
+    }
 }
 
-
-
-
-
+public class Attachment {
+    private String id;
+    // Other attributes and getters/setters
+    
+    public String getId() {
+        return id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+}
