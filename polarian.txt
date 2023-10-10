@@ -1,15 +1,8 @@
-i want to send file form local system to polarian workitem , i have written below code but its not working please fix the bug to send file on polarian workitem :
-
 package com.hcl.nexalm.polarion.restapi;
-
- 
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
- 
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -19,41 +12,29 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
- 
+public class AddAttachment {
 
- 
+    public static void main(String[] args) {
+        List<File> oneFile = new ArrayList<>();
+        File f = new File("C:/Image/A.txt");
+        oneFile.add(f);
+        addWorkItemAttachments(oneFile, "BGPT-585");
+    }
 
-public class addAttachment<Core_DataEntitiy> {
-
-	public static void main(String[] args) {
-		List<File> oneFile = new ArrayList<>();
-		File f = new File("C:/Image/A.txt");
-		oneFile.add(f);
-		addWorkItemAttachments(oneFile, "BGPT-585");
-	}
-
- 
-
-    public static List<Attachment> addWorkItemAttachments( List<File> attachments, String workItemId) {
+    public static List<Attachment> addWorkItemAttachments(List<File> attachments, String workItemId) {
         List<Attachment> attachmentsList = new ArrayList<>();
 
- 
-
-//        Map<String, String> details =  (Map<String, String>) data;
         try {
             String inputJson = "{\n" +
                     "  \"data\": [\n";
             String workItemAttachments = "";
             int attachmentsCount = attachments.size();
 
- 
-
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-
- 
 
             for (File file : attachments) {
                 attachmentsCount--;
@@ -66,106 +47,53 @@ public class addAttachment<Core_DataEntitiy> {
                         "      }\n" +
                         "    }";
 
- 
-
                 if (attachmentsCount == 0) {
                     workItemAttachments += "\n";
-
                 } else {
                     workItemAttachments += ",\n";
-
                 }
-
- 
 
                 builder.addBinaryBody(file.getName(), file, ContentType.APPLICATION_OCTET_STREAM, file.getName());
                 System.out.println(file.getName());
             }
 
- 
-
             inputJson += workItemAttachments + "  ]\n" +
                     "}";
-
- 
 
             builder.addTextBody("data", inputJson, ContentType.APPLICATION_JSON);
             HttpEntity multipart = builder.build();
             CloseableHttpClient client = HttpClients.createDefault();
 
- 
-
-//            String uri = details.get(ApplicationConstant.TARGET_URL) + RestServiceConstants.REST_URI + "/projects/"
-//                    + details.get(ApplicationConstant.PROJECT_ID) + "/workitems/" + workItemId + "/attachments";
-
             String uri = "http://hclt-pc4391-1:8088/polarion/rest/v1/projects/BalajiGarud_ProjectTask/workitems/BGPT-586/attachments";
-//			details.get(ApplicationConstant.TARGET_URL) + RestServiceConstants.REST_URI + "/projects/"
-//			+ "BalajiGarud_ProjectTask" + "/workitems/"
-//			+  + "/attachments";
-
- 
 
             HttpPost httpPost = new HttpPost(uri);
             httpPost.setEntity(multipart);
             httpPost.setHeader("Content-type", "multipart/form-data");
             httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Authorization","Bearer "+
-//    				RestServiceConstants.REST_AUTH_BEARER + details.get(ApplicationConstant.TOKEN));
-    				"eyJraWQiOiI2NjdjYjYzNy0wYTc2M2ExZC0yNTkxNjEyNS1jMGM4NGFjMyIsInR5cCI6IkpXVCIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJhZG1pbiIsImlkIjoiNmRjODM0MTQtMGE3NjNhMWQtM2QxMWZjOWYtNjE4ZWQ3NDMiLCJleHAiOjE3Nzc0ODc0MDAsImlhdCI6MTY3Njg3OTA4Mn0.ife703Lb0jdWJjNhPtIOZnO2UtDk10LgxCUnw0YU9NP3eM7CU99ROCERZjFUqfneclKmyxNRDPUdBkqKFjjj4eR4dBYbEH9Xn_XEF_dOPUxqxfOvfMpI3jqkkL0e2kFpdRZRG6Sai_i_gVwLsEeSvC_rbPA9kgkX1Ppw0HipI8J__eCqqqP6AcgQFYUuNKtw7ErjwOSLm3RQYDYsxVpRQJoLJ5oIfFhZVmBUt52hvoAQPb_h3dMzjfBPoR2gnzSc-NaOANLmRANKKlTV3TqV577SjIXImFj4r3G6tf_xARPEorwkQVoROO59FegMtpjW6jJ9sXSbBd3xd5ca_u6iJg");
-    		CloseableHttpResponse response = client.execute(httpPost);
-
- 
+            httpPost.setHeader("Authorization", "Bearer eyJraWQiOiI2NjdjYjYzNy0wYTc2M2ExZC0yNTkxNjEyNS1jMGM4NGFjMyIsInR5cCI6IkpXVCIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJhZG1pbiIsImlkIjoiNmRjODM0MTQtMGE3NjNhMWQtM2QxMWZjOWYtNjE4ZWQ3NDMiLCJleHAiOjE3Nzc0ODc0MDAsImlhdCI6MTY3Njg3OTA4Mn0.ife703Lb0jdWJjNhPtIOZnO2UtDk10LgxCUnw0YU9NP3eM7CU99ROCERZjFUqfneclKmyxNRDPUdBkqKFjjj4eR4dBYbEH9Xn_XEF_dOPUxqxfOvfMpI3jqkkL0e2kFpdRZRG6Sai_i_gVwLsEeSvC_rbPA9kgkX1Ppw0HipI8J__eCqqqP6AcgQFYUuNKtw7ErjwOSLm3RQYDYsxVpRQJoLJ5oIfFhZVmBUt52hvoAQPb_h3dMzjfBPoR2gnzSc-NaOANLmRANKKlTV3TqV577SjIXImFj4r3G6tf_xARPEorwkQVoROO59FegMtpjW6jJ9sXSbBd3xd5ca_u6iJg");
+            CloseableHttpResponse response = client.execute(httpPost);
 
             if (response.getStatusLine().getStatusCode() == 201) {
                 String content = IOUtils.toString(response.getEntity().getContent());
-                JSONObject obj = new JSONObject(content);
-                System.out.println("Hi");
+```java
+                JsonObject obj = new JsonParser().parse(content).getAsJsonObject();
+                JsonArray jsonArray = obj.getAsJsonArray("data");
 
- 
-
-                if (obj.length() > 1) {
-                    if (obj.has("data")) {
-                        JSONArray jsonArray = obj.getJSONArray("data");
-
-
- 
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject attachmentObject = jsonArray.getJSONObject(i);
-                            if (attachmentObject.has("id")) {
-                                String id = attachmentObject.getString("id");
-                                Attachment attachment = new Attachment();
-                                attachment.setId(id);
-                                attachmentsList.add(attachment);
-                            }
-                        }
-                    }
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JsonObject attachmentObject = jsonArray.get(i).getAsJsonObject();
+                    String attachmentId = attachmentObject.get("id").getAsString();
+                    Attachment attachment = new Attachment(attachmentId);
+                    attachmentsList.add(attachment);
                 }
             } else {
-                JSONObject obj = new JSONObject(IOUtils.toString(response.getEntity().getContent()));
-
- 
-
-                if (obj.has("errors")) {
-                    JSONArray jsonArray = obj.getJSONArray("errors");
-
- 
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject errorObject = jsonArray.getJSONObject(i);
-                        if (errorObject.has("detail")) {
-                            String error = errorObject.getString("detail");
-                            System.out.println("Error occurred while adding work item's attachment by ID\nStatus Code: " +
-                                    response.getStatusLine().getStatusCode() + "\nDetails: " + error);
-                        }
-                    }
-                }
+                System.out.println("Failed to add attachments. Response code: " + response.getStatusLine().getStatusCode());
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
- 
+            response.close();
+            client.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return attachmentsList;
     }
