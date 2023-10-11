@@ -1,0 +1,99 @@
+[{
+  "_id": {
+    "$oid": "651fafcc03bb840c2e4ec46c"
+  },
+  "name": "iphone 15",
+  "price": "1300000",
+  "category": "mobile",
+  "userId": "1234",
+  "company": "iphone",
+  "__v": 0,
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_15_yellow_pdp_image_position_1__au_4_2.jpg"
+},{
+  "_id": {
+    "$oid": "651fd546b3eab510a10224c5"
+  },
+  "name": "Motorola Edge",
+  "price": "14,599",
+  "category": "mobile",
+  "userId": "651fd4ddb3eab510a10224c3",
+  "company": "Motorola",
+  "__v": 0,
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/5/4/5487559-motoriola-moto-e32-slate-grey.jpg"
+},{
+  "_id": {
+    "$oid": "651ffdc5dc8d8859485b098a"
+  },
+  "name": "sony 5000",
+  "price": "17,699",
+  "category": "mobile",
+  "userId": "651fea94b3eab510a10224cb",
+  "company": "sony",
+  "__v": 0,
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/s/m/sm-a047_galaxy_a04s_black_front.jpg"
+},{
+  "_id": {
+    "$oid": "65262277698a7b006142f0dd"
+  },
+  "name": "Oppo f12",
+  "price": "15,699",
+  "category": "mobile",
+  "userId": "65251d5630fabbcb27bac3e4",
+  "company": "Oppo",
+  "__v": 0,
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/a/1/a17-blue-1.png"
+},{
+  "_id": {
+    "$oid": "652643f920db798078184e43"
+  },
+  "name": "Iphone 15 pro",
+  "price": "1,45,000",
+  "category": "mobile",
+  "company": "Iphone",
+  "__v": 0,
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/4/_/4_1_1_25_1_101.jpg"
+},{
+  "_id": {
+    "$oid": "65264d2fa75c6677a864726d"
+  },
+  "name": "lenovo vibe k6",
+  "price": "232342",
+  "category": "mobile ",
+  "userId": "652643f920db798078184e43",
+  "company": "lenovo",
+  "__v": 0,
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/z/a/za5g0036au-lenovo-tab-m8-2nd-gen-hd-8-inch-tablet-9.jpg"
+},{
+  "_id": {
+    "$oid": "652651e533196be661f34561"
+  },
+  "name": "Motorola Razr 40 Ultra 256GB - Infinite Black",
+  "price": "36,999",
+  "category": "mobile",
+  "userId": "65263b8c8332e6d04d28253a",
+  "company": "Motorola",
+  "__v": 0,
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/5/7/5784091-motorola-razr-40-ultra-infinite-black-11.jpg"
+},{
+  "_id": {
+    "$oid": "65266f52565cba42d3fca33c"
+  },
+  "name": "Google Pixel",
+  "price": "45,799",
+  "category": "mobile",
+  "userId": "65251d5630fabbcb27bac3e4",
+  "company": "google ",
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/1/_/1._main_image_all_p8p_2023q3_4_standing_soldier_sky_wallpaper_light.jpg",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "652698d717f6cb9d99d5bfa5"
+  },
+  "name": "Realme 5 pro",
+  "price": "15,000",
+  "category": "mobile",
+  "userId": "65251d5630fabbcb27bac3e4",
+  "company": "REalme",
+  "imagelink": "https://azcd.domayne.com.au/media/catalog/product/cache/25/image/992x558/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_15_yellow_pdp_image_position_1__au_4_2.jpg",
+  "__v": 0
+}]

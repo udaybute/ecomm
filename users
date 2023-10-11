@@ -1,0 +1,65 @@
+[{
+  "_id": {
+    "$oid": "651fa40a04025e76383c5dd8"
+  },
+  "name": "uday",
+  "email": "uday@gmail.com",
+  "password": "1234",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "651fa41d04025e76383c5dda"
+  },
+  "name": "uday",
+  "email": "uday@gmail.com",
+  "password": "sd3",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "651fa5d1492af9248bb3d08c"
+  },
+  "name": "uday",
+  "email": "uday@gmail.com",
+  "password": "sd3",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "651fa626492af9248bb3d08e"
+  },
+  "name": "uday",
+  "email": "uday@gmail.com",
+  "password": "1234",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "651fa797011638da2f983afa"
+  },
+  "name": "uday",
+  "email": "uday@gmail.com",
+  "password": "1234",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6525186930fabbcb27bac3d1"
+  },
+  "name": "john",
+  "email": "john@gmail.com",
+  "password": "1234",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "65251d5630fabbcb27bac3e4"
+  },
+  "name": "Jeon Jungkook",
+  "email": "Jungkook@gmail.com",
+  "password": "1234",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "65263b8c8332e6d04d28253a"
+  },
+  "name": "jayesh",
+  "email": "jayesh@gmail.com",
+  "password": "1234",
+  "__v": 0
+}]
